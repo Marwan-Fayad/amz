@@ -1,7 +1,6 @@
 
 import streamlit as st
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 
@@ -76,53 +75,53 @@ if sidebar_sel == 'Introduction':
         st.write(amazon.head())
 elif sidebar_sel=='EDA':
     st.header('Exploratory Data Analysis')
-    st.subheader('Distribution of discounted prices')
     plt.figure(figsize=(12, 6))
-    sns.histplot(amazon['discounted_price'], bins=50, kde=True, color='blue')
+    plt.hist(amazon['discounted_price'], bins=50, color='blue', alpha=0.7, edgecolor='black')
     plt.title('Distribution of Discounted Prices')
     plt.xlabel('Discounted Price (₹)')
     plt.ylabel('Frequency')
-    st.pyplot(plt)
-    st.subheader('Distribution of actual prices')
+    plt.grid(axis='y', alpha=0.75)  # Optional: Add grid for better readability
+    st.pyplot(plt)  # Display the plot in Streamlit
+
+# Plot for Actual Prices
     plt.figure(figsize=(12, 6))
-    sns.histplot(amazon['actual_price'], bins=50, kde=True, color='green')
+    plt.hist(amazon['actual_price'], bins=50, color='green', alpha=0.7, edgecolor='black')
     plt.title('Distribution of Actual Prices')
     plt.xlabel('Actual Price (₹)')
     plt.ylabel('Frequency')
-    st.pyplot(plt) 
+    plt.grid(axis='y', alpha=0.75)  # Optional: Add grid for better readability
+    st.pyplot(plt)
 elif sidebar_sel=='Charts':
     st.header('Main Objectives Charts')
     # Most main items by category
     most_main_items = amazon['category_1'].value_counts().head(5).rename_axis('category_1').reset_index(name='counts')
     most_sub_items = amazon['category_2'].value_counts().head(10).rename_axis('category_2').reset_index(name='counts')
 
-    # Create subplots with larger figure size
-    fig, ax = plt.subplots(2, 1, figsize=(60, 60))  # Increased size to 12x12 inches
+# Create subplots with larger figure size
+    fig, ax = plt.subplots(2, 1, figsize=(12, 12))  # Adjusted size to 12x12 inches
     fig.suptitle('Most Amount of Products by Main Category and Sub-Category', fontweight='heavy', size='x-large')
 
-    # Create bar plots
-    sns.barplot(ax=ax[0], data=most_main_items, x='counts', y='category_1')
-    sns.barplot(ax=ax[1], data=most_sub_items, x='counts', y='category_2')
+# Create bar plots for main categories
+    ax[0].barh(most_main_items['category_1'], most_main_items['counts'], color='skyblue')
+    ax[0].set_xlabel('Count', fontweight='bold', fontsize=14)
+    ax[0].set_ylabel('Product Main Category', fontweight='bold', fontsize=14)
+    ax[0].set_title('Most Products by Main Category', fontweight='bold', fontsize=16)
 
-    # Set labels and titles with larger font sizes
-    ax[0].set_xlabel('Count', fontweight='bold', fontsize=80)
-    ax[0].set_ylabel('Product Main Category', fontweight='bold', fontsize=80)
-    ax[0].set_title('Most Products by Main Category', fontweight='bold', fontsize=80)
+# Create bar plots for sub-categories
+    ax[1].barh(most_sub_items['category_2'], most_sub_items['counts'], color='lightgreen')
+    ax[1].set_xlabel('Count', fontweight='bold', fontsize=14)
+    ax[1].set_ylabel('Product Sub-Category', fontweight='bold', fontsize=14)
+    ax[1].set_title('Most Products by Sub-Category', fontweight='bold', fontsize=16)
 
-    ax[1].set_xlabel('Count', fontweight='bold', fontsize=80)
-    ax[1].set_ylabel('Product Sub-Category', fontweight='bold', fontsize=80)
-    ax[1].set_title('Most Products by Sub-Category', fontweight='bold', fontsize=80)
+# Increase tick label sizes
+    ax[0].tick_params(axis='both', which='major', labelsize=12)
+    ax[1].tick_params(axis='both', which='major', labelsize=12)
 
-    # Increase tick label sizes
-    ax[0].tick_params(axis='both', which='major', labelsize=80)
-    ax[1].tick_params(axis='both', which='major', labelsize=80)
-
-    # Adjust spacing between subplots
+# Adjust spacing between subplots
     plt.subplots_adjust(hspace=0.4)  # Increase space between the plots
 
-    # Display the plots in Streamlit
+# Display the plots in Streamlit
     st.pyplot(fig)
-
     # Create a figure with a specified size
     plt.figure(figsize=(20, 16))  # Adjust the size as needed
 
