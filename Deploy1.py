@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 # Load the dataset
-data = pd.read_csv(r"C:\Users\lenovo\Desktop\Diploma\Project_1\amazon.csv")
+data = pd.read_csv("amazon.csv")
 data['rating'] = data['rating'].str.replace('|', '3.9').astype('float64')
 data['discounted_price'] = data['discounted_price'].str.replace("₹",'')
 data['discounted_price'] = data['discounted_price'].str.replace(",",'')
